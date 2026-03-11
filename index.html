@@ -1,3 +1,6 @@
+Here is the complete file:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,12 +37,14 @@
   .stats-row { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
   .stat-chip { background: var(--teal-light); border: 1px solid var(--teal-mid); color: var(--teal); font-size: 12.5px; font-weight: 500; padding: 6px 14px; border-radius: 20px; }
 
+  /* Main card */
   .card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 32px 36px; margin-bottom: 28px; box-shadow: var(--shadow); }
   .card h3 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; margin-bottom: 6px; color: var(--dark); }
   .card-sub { font-size: 13px; color: var(--mid); margin-bottom: 24px; line-height: 1.5; }
   .section-label { font-size: 14px; color: var(--mid); margin-bottom: 14px; font-weight: 500; display: block; }
   .section-divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
 
+  /* Purpose grid */
   .purpose-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
   @media (max-width: 640px) { .purpose-selector { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 400px) { .purpose-selector { grid-template-columns: 1fr; } }
@@ -51,25 +56,30 @@
   .purpose-btn.active { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 0 0 2px var(--teal); }
   .purpose-btn.active .purpose-label { color: var(--teal); }
 
+  /* Progress bar */
   .progress-wrap { margin-bottom: 28px; }
   .progress-label { font-size: 12px; color: var(--mid); margin-bottom: 8px; display: flex; justify-content: space-between; }
   .progress-bar-bg { background: var(--teal-light); border-radius: 4px; height: 6px; }
   .progress-bar-fill { background: var(--teal); height: 6px; border-radius: 4px; transition: width 0.4s ease; }
 
+  /* Question step */
   .question-step { display: none; }
   .question-step.active { display: block; }
   .question-label { font-size: 17px; font-weight: 600; color: var(--dark); margin-bottom: 6px; line-height: 1.4; }
   .question-hint { font-size: 13px; color: var(--mid); margin-bottom: 18px; line-height: 1.6; font-style: italic; }
 
+  /* Answer options (multi choice) */
   .answer-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
   .answer-btn { padding: 14px 18px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--dark); cursor: pointer; transition: all 0.18s ease; text-align: left; line-height: 1.4; }
   .answer-btn:hover { border-color: var(--teal); background: var(--teal-light); }
   .answer-btn.selected { border-color: var(--teal); background: var(--teal-light); box-shadow: 0 0 0 2px var(--teal); color: var(--teal); font-weight: 500; }
 
+  /* Text answer */
   .answer-textarea { width: 100%; min-height: 88px; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--dark); background: var(--white); resize: vertical; line-height: 1.6; transition: border-color 0.18s ease; margin-bottom: 24px; }
   .answer-textarea:focus { outline: none; border-color: var(--teal); }
   .answer-textarea::placeholder { color: #a0bebe; }
 
+  /* Nav buttons */
   .nav-row { display: flex; gap: 12px; align-items: center; }
   .btn-back { padding: 12px 22px; background: transparent; border: 1.5px solid var(--border); color: var(--mid); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.18s ease; }
   .btn-back:hover { border-color: var(--teal); color: var(--teal); }
@@ -77,10 +87,16 @@
   .btn-next:hover:not(:disabled) { background: #006666; }
   .btn-next:disabled { background: var(--teal-mid); cursor: not-allowed; }
 
+  /* Summary chips */
   .answers-summary { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
   .summary-chip { background: var(--teal-light); border: 1px solid var(--teal-mid); color: var(--teal); font-size: 12px; font-weight: 500; padding: 5px 12px; border-radius: 20px; }
 
-  .prompt-chip { padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--teal-mid); background: var(--teal-light); color: var(--teal); font-family: 'DM Sans', sans-serif; font-size: 12.5px; font-weight: 500; cursor: pointer; transition: all 0.18s ease; }
+  /* Prompt chips for prompted_text questions */
+  .prompt-chip {
+    padding: 7px 14px; border-radius: 20px; border: 1.5px solid var(--teal-mid);
+    background: var(--teal-light); color: var(--teal); font-family: 'DM Sans', sans-serif;
+    font-size: 12.5px; font-weight: 500; cursor: pointer; transition: all 0.18s ease;
+  }
   .prompt-chip:hover { background: var(--teal); color: white; border-color: var(--teal); }
 
   .depth-selector { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
@@ -89,6 +105,7 @@
   .depth-btn.active { background: var(--teal); border-color: var(--teal); color: white; }
   .depth-desc { font-size: 13px; color: var(--mid); margin-bottom: 20px; min-height: 20px; font-style: italic; }
 
+  /* Drop zone */
   .drop-zone { border: 2px dashed var(--teal-mid); border-radius: 12px; background: var(--teal-light); padding: 40px; text-align: center; cursor: pointer; transition: all 0.2s ease; position: relative; }
   .drop-zone:hover, .drop-zone.dragover { border-color: var(--teal); background: #d4ecec; }
   .drop-zone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
@@ -104,6 +121,7 @@
   .analyse-btn:hover:not(:disabled) { background: #006666; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,128,128,0.25); }
   .analyse-btn:disabled { background: var(--teal-mid); cursor: not-allowed; }
 
+  /* Loading */
   .loading-section { display: none; background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 40px; text-align: center; box-shadow: var(--shadow); margin-bottom: 28px; }
   .loading-section.show { display: block; }
   .spinner { width: 48px; height: 48px; border: 4px solid var(--teal-light); border-top: 4px solid var(--teal); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 20px; }
@@ -111,6 +129,7 @@
   .loading-section h3 { font-family: 'DM Serif Display', serif; font-size: 20px; font-weight: 400; color: var(--dark); margin-bottom: 8px; }
   .loading-section p { font-size: 14px; color: var(--mid); }
 
+  /* Results */
   .results-section { display: none; }
   .results-section.show { display: block; }
   .results-header { background: var(--dark); border-radius: 16px 16px 0 0; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
@@ -134,6 +153,7 @@
   .results-content li { margin-bottom: 8px; color: var(--mid); }
   .results-content strong { color: var(--dark); font-weight: 600; }
 
+  /* Correction panel */
   .correction-panel { display: none; background: var(--beige); border: 1.5px solid var(--yellow); border-radius: 12px; padding: 20px 24px; margin-top: 24px; }
   .correction-panel.show { display: block; }
   .correction-panel h4 { font-size: 14px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
@@ -239,7 +259,9 @@
     <div class="card" id="uploadCard" style="display:none;">
       <h3>Step 5 of 5 &mdash; Depth and Upload</h3>
       <p class="card-sub">Almost there. Choose how much feedback you would like, then upload your LinkedIn PDF.</p>
+
       <div class="answers-summary" id="answersSummary"></div>
+
       <span class="section-label">How much feedback would you like?</span>
       <div class="depth-selector">
         <button class="depth-btn active" onclick="setDepth(this, 'quick')">Quick Wins</button>
@@ -247,7 +269,9 @@
         <button class="depth-btn" onclick="setDepth(this, 'full')">Full Audit</button>
       </div>
       <p class="depth-desc" id="depthDesc">Top 3-5 high-impact improvements you can action right away, with a score across five dimensions.</p>
+
       <hr class="section-divider">
+
       <span class="section-label">Upload your profile PDF</span>
       <p style="font-size:12.5px;color:var(--mid);margin-bottom:14px;">To export from LinkedIn: go to your profile, click More, then Save to PDF.</p>
       <div class="drop-zone" id="dropZone">
@@ -297,7 +321,7 @@
     </div>
 
     <div class="research-note">
-      <p>This tool draws on current Australian and international research and best practice guidance on LinkedIn profile optimisation for job seekers, consultants, fractional professionals, board directors, and speakers. References are available on request via <a href="https://www.peoplematterhr.com.au" target="_blank" style="color:var(--teal);">People Matter Coaching &amp; HR</a>.</p>
+      <p>This tool draws on current Australian and international research and best practice guidance on LinkedIn profile optimisation for job seekers, consultants, fractional professionals, board directors, and speakers.</p>
     </div>
 
   </div>
@@ -449,30 +473,50 @@
       {
         id: 'board_experience',
         label: 'How would you describe your current board experience?',
-        hint: 'This helps us calibrate the feedback for where you are in your board career.',
-        type: 'choice',
+        hint: 'Select all that apply. This helps us calibrate the feedback for where you are in your board career.',
+        type: 'multi',
         options: ['No board experience yet, actively seeking first appointment', 'One or two board roles, looking to expand', 'Established board director seeking new or additional appointments', 'Transitioning from executive career to portfolio board career']
       },
       {
         id: 'sector_target',
         label: 'What type of boards are you targeting?',
-        hint: 'For example: NFP, ASX listed, government, private, advisory boards, or a specific sector.',
-        type: 'text',
-        placeholder: 'e.g. NFP boards in health and community services, or advisory boards for early-stage tech companies...'
+        hint: 'Select any that apply, then add more detail if it would help.',
+        type: 'choice_plus_text',
+        options: [
+          'NFP or not-for-profit',
+          'Community services or social services',
+          'Health or aged care',
+          'Education',
+          'Government or public sector',
+          'ASX listed company',
+          'Private company',
+          'Startup or early-stage',
+          'Arts, culture or sport',
+          'Advisory board (non-statutory)'
+        ],
+        placeholder: 'Add any more detail about the sectors, size, or type of organisations you are targeting...'
       },
       {
         id: 'board_contribution',
         label: 'What is your primary area of contribution at board level?',
         hint: 'Select all that apply. What expertise or perspective do you bring to a board?',
         type: 'multi',
-        options: ['People, culture and HR', 'Finance and audit', 'Risk and governance', 'Strategy and growth', 'Technology and digital', 'Legal and compliance', 'Community and stakeholder engagement', 'Clinical or professional expertise']
+        options: ['People, culture and HR', 'Finance and audit', 'Risk and governance', 'Strategy and growth', 'Technology and digital', 'Legal and compliance', 'Community and stakeholder engagement', 'Clinical or professional expertise', 'Other']
       },
       {
         id: 'credentials',
         label: 'Do you hold any governance credentials or qualifications?',
-        hint: 'For example: AICD Company Directors Course, graduate diploma, or similar. Include any relevant professional memberships.',
-        type: 'text',
-        placeholder: 'e.g. AICD Company Directors Course graduate, FAICD member, Graduate Certificate in Governance...'
+        hint: 'Select any that apply, or select No if not applicable. Add detail in your own words if useful.',
+        type: 'choice_plus_text',
+        options: [
+          'No',
+          'AICD Company Directors Course (completed)',
+          'AICD membership (MAICD or FAICD)',
+          'Graduate Certificate or Diploma in Governance',
+          'Other governance qualification or credential',
+          'Currently studying towards a governance qualification'
+        ],
+        placeholder: 'Add any other credentials, professional memberships, or relevant qualifications here...'
       }
     ],
     speaking: [
@@ -994,4 +1038,81 @@
     var btn = document.getElementById('correctionBtn');
     btn.disabled = true;
     btn.textContent = 'Re-analysing...';
-    document.g
+    document.getElementById('correctionPanel').classList.remove('show');
+    document.getElementById('scorePanel').style.display = 'none';
+    document.getElementById('loadingSection').classList.add('show');
+    document.getElementById('resultsSection').classList.remove('show');
+    try {
+      var base64 = await fileToBase64(selectedFile);
+      var ctx = getPurposeContext();
+      var systemPrompt = buildSystemPrompt(ctx);
+      var answersContext = buildContextFromAnswers();
+      var contextNote = answersContext ? '\n\nUser context from their earlier answers:\n\n' + answersContext : '';
+      var correctionNote = '\n\nIMPORTANT CORRECTION FROM THE USER:\n"' + correction + '"\n\nPlease take this correction fully into account and provide a revised, more accurate analysis.';
+      var userPrompt = 'Please analyse this LinkedIn profile and provide feedback.\n\n' + buildDepthInstruction(selectedDepth, ctx) + contextNote + correctionNote + '\n\nGuidelines:\n- Reference the person\'s actual content specifically\n- Use Australian English spelling and expression throughout\n- Be warm and constructive, not clinical\n- Give concrete rewrite examples where relevant\n- Do not use em-dashes\n- Keep paragraphs concise and scannable';
+      var rawText = await callAPI(base64, userPrompt, systemPrompt);
+      var scores = parseScores(rawText);
+      var cleanText = rawText.replace(/SCORES:.*?\n/i, '').trim();
+      displayResults(cleanText, scores);
+    } catch (err) {
+      document.getElementById('loadingSection').classList.remove('show');
+      document.getElementById('resultsSection').classList.add('show');
+      document.getElementById('correctionPanel').classList.add('show');
+      showError('Re-analysis failed: ' + err.message + ' Please try again.');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Re-analyse with this correction &rarr;';
+    }
+  }
+
+  function renderMarkdown(text) {
+    var lines = text.split('\n');
+    var html = '';
+    var inList = false;
+    for (var i = 0; i < lines.length; i++) {
+      var t = lines[i].trim();
+      if (/^## .+/.test(t)) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<h2>' + t.replace(/^## /, '').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</h2>';
+      } else if (/^### .+/.test(t)) {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<h3>' + t.replace(/^### /, '').replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</h3>';
+      } else if (/^(\d+\.|-)/.test(t)) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += '<li>' + t.replace(/^(\d+\. ?|- )/, '').trim().replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</li>';
+      } else if (t === '') {
+        if (inList) { html += '</ul>'; inList = false; }
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<p>' + t.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>') + '</p>';
+      }
+    }
+    if (inList) html += '</ul>';
+    return html;
+  }
+
+  function resetTool() {
+    selectedFile = null;
+    selectedPurpose = 'jobseeker';
+    selectedDepth = 'quick';
+    questionAnswers = {};
+    currentQuestion = 0;
+    document.getElementById('fileInput').value = '';
+    document.getElementById('fileSelected').classList.remove('show');
+    document.getElementById('analyseBtn').disabled = true;
+    document.getElementById('resultsSection').classList.remove('show');
+    document.getElementById('loadingSection').classList.remove('show');
+    document.getElementById('uploadCard').style.display = 'none';
+    document.getElementById('questionCard').style.display = 'none';
+    document.getElementById('step1').style.display = 'block';
+    document.getElementById('scorePanel').style.display = 'none';
+    document.getElementById('correctionPanel').classList.remove('show');
+    document.getElementById('depthDesc').textContent = depthDescriptions['quick'];
+    document.querySelectorAll('.purpose-btn').forEach(function(b, i) { b.classList.toggle('active', i === 0); });
+    document.querySelectorAll('.depth-btn').forEach(function(b, i) { b.classList.toggle('active', i === 0); });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+</script>
+</body>
+</html>
+```
