@@ -197,11 +197,11 @@
   <div class="access-card">
     <div class="logo-mark" style="background:var(--teal);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:'DM Serif Display',serif;color:white;">L</div>
     <h2>LinkedIn Profile Analyser</h2>
-    <p>This tool is shared privately by People Matter Coaching &amp; HR. Please enter your access code to continue.</p>
-    <input class="access-input" id="accessInput" type="password" placeholder="Enter access code" onkeydown="if(event.key==='Enter')checkCode()">
-    <div class="access-error" id="accessError">That code is not correct. Please check with Desleigh and try again.</div>
-    <button class="access-submit" onclick="checkCode()">Continue &rarr;</button>
-    <div class="access-footer">People Matter Coaching &amp; HR &middot; peoplematterhr.com.au</div>
+    <p id="accessGateMsg">This tool is available to People Matter Coaching &amp; HR clients and workshop participants. Enter your email address to continue.</p>
+    <input class="access-input" id="accessInput" type="email" placeholder="Your email address" onkeydown="if(event.key==='Enter')checkEmail()">
+    <div class="access-error" id="accessError"></div>
+    <button class="access-submit" id="accessSubmitBtn" onclick="checkEmail()">Continue &rarr;</button>
+    <div class="access-footer">People Matter Coaching &amp; HR &middot; <a href="https://www.peoplematterhr.com.au" target="_blank" style="color:var(--mid);">peoplematterhr.com.au</a></div>
   </div>
 </div>
 
@@ -360,27 +360,60 @@
 </footer>
 
 <script>
-  var ACCESS_CODE = '20K0';
+  // ---------------------------------------------------------------
+  // APPROVED USERS
+  // Add or remove email addresses here to manage access.
+  // Emails are case-insensitive. One per line.
+  // ---------------------------------------------------------------
+  var APPROVED_USERS = [
+    'dwhite@peoplematterhr.com.au',
+    'davidgbogbo@gmail.com',
+    'khourirevell@hotmail.com',
+    'jacquie@mccannadvisory.com.au',
+    'maria.mermelas@outlook.com'
+    // Add more approved emails below, e.g.:
+    // 'jane.smith@example.com',
+  ];
+  // ---------------------------------------------------------------
 
-  function checkCode() {
+  var approvedEmail = '';
+
+  function checkEmail() {
     var input = document.getElementById('accessInput');
     var error = document.getElementById('accessError');
-    var val = input.value.trim().toUpperCase();
-    if (val === ACCESS_CODE) {
+    var val = input.value.trim().toLowerCase();
+
+    if (!val || !val.includes('@')) {
+      input.classList.add('error');
+      error.textContent = 'Please enter a valid email address.';
+      error.classList.add('show');
+      input.focus();
+      return;
+    }
+
+    var approved = APPROVED_USERS.map(function(e) { return e.toLowerCase(); });
+    if (approved.indexOf(val) !== -1) {
+      approvedEmail = val;
       document.getElementById('accessGate').classList.add('hidden');
-      sessionStorage.setItem('pmhr_access', '1');
+      sessionStorage.setItem('pmhr_access', val);
       input.classList.remove('error');
       error.classList.remove('show');
     } else {
       input.classList.add('error');
+      error.innerHTML = 'That email address is not on the access list. To find out more about working with Desleigh, visit <a href="https://www.peoplematterhr.com.au" target="_blank" style="color:#c0392b;font-weight:600;">peoplematterhr.com.au</a> or email <a href="mailto:contact@peoplematterhr.com.au" style="color:#c0392b;font-weight:600;">contact@peoplematterhr.com.au</a>';
       error.classList.add('show');
       input.focus();
     }
   }
 
   // Check if already unlocked this session
-  if (sessionStorage.getItem('pmhr_access') === '1') {
-    document.getElementById('accessGate').classList.add('hidden');
+  var savedEmail = sessionStorage.getItem('pmhr_access');
+  if (savedEmail) {
+    var approved = APPROVED_USERS.map(function(e) { return e.toLowerCase(); });
+    if (approved.indexOf(savedEmail.toLowerCase()) !== -1) {
+      approvedEmail = savedEmail;
+      document.getElementById('accessGate').classList.add('hidden');
+    }
   }
 
   var selectedFile = null;
@@ -388,6 +421,7 @@
   var selectedPurpose = 'jobseeker';
   var currentQuestion = 0;
   var questionAnswers = {};
+  var lastProfileName = '';
 
   var depthDescriptions = {
     quick: 'All 9 sections covered concisely. Key findings, headline options, a discoverability score, and top actions. Best for a fast read.',
@@ -929,9 +963,9 @@
     if (file) { handleFile({ target: { files: [file] } }); }
   });
 
-  function showError(msg) {
+  function showError(msg, isHtml) {
     var el = document.getElementById('errorBox');
-    el.textContent = msg;
+    if (isHtml) { el.innerHTML = msg; } else { el.textContent = msg; }
     el.classList.add('show');
   }
 
@@ -1164,16 +1198,47 @@
 
     try {
       var base64 = await fileToBase64(selectedFile);
+
+      // Step 1: Extract the name from the PDF and verify it matches the approved user
+      var nameCheckResponse = await callAPI(base64,
+        'Look at this LinkedIn profile PDF. Return ONLY the full name of the person whose profile this is, exactly as it appears at the top of the profile. Nothing else. No punctuation, no explanation.',
+        'You are a data extraction assistant. Extract only the requested field and return nothing else.'
+      );
+      var profileName = nameCheckResponse.trim();
+
+      // Get the approved user's name from their email (first part before @, formatted)
+      // We do a loose check: does the profile name share words with the approved email prefix?
+      var emailPrefix = approvedEmail.split('@')[0].toLowerCase().replace(/[^a-z]/g, ' ').trim();
+      var profileNameLower = profileName.toLowerCase().replace(/[^a-z\s]/g, '').trim();
+
+      // Check if any word from the email prefix appears in the profile name
+      var emailWords = emailPrefix.split(/\s+/).filter(function(w) { return w.length > 2; });
+      var profileWords = profileNameLower.split(/\s+/);
+      var nameMatch = emailWords.some(function(ew) {
+        return profileWords.some(function(pw) { return pw.indexOf(ew) !== -1 || ew.indexOf(pw) !== -1; });
+      });
+
+      if (!nameMatch) {
+        document.getElementById('loadingSection').classList.remove('show');
+        document.getElementById('uploadCard').style.display = 'block';
+        showError(
+          'The profile uploaded does not appear to match your access. This tool is for personal use only and each login is tied to an individual profile. If you think this is an error or you are interested in accessing this tool, please get in touch: <a href="mailto:contact@peoplematterhr.com.au" style="color:#c0392b;font-weight:600;">contact@peoplematterhr.com.au</a> or visit <a href="https://www.peoplematterhr.com.au" target="_blank" style="color:#c0392b;font-weight:600;">peoplematterhr.com.au</a>',
+          true
+        );
+        return;
+      }
+
+      // Step 2: Run the full analysis
       var ctx = getPurposeContext();
       var systemPrompt = buildSystemPrompt(ctx);
       var answersContext = buildContextFromAnswers();
       var contextNote = answersContext ? '\n\nThe user answered the following questions before uploading their profile. Please take all of these answers into account throughout your analysis. They may clarify assumptions, reveal priorities, and highlight specific areas to focus on:\n\n' + answersContext : '';
-      var userPrompt = 'Please analyse this LinkedIn profile and provide feedback.\n\n' + buildDepthInstruction(selectedDepth, ctx) + contextNote + '\n\nGuidelines:\n- Reference the person\'s actual content specifically throughout your feedback\n- Use Australian English spelling and expression throughout\n- Be warm and constructive, not clinical\n- Give concrete rewrite examples where relevant\n- Do not use em-dashes\n- Keep paragraphs concise and scannable';
+      var userPrompt = 'Please analyse this LinkedIn profile for ' + profileName + ' and provide feedback.\n\n' + buildDepthInstruction(selectedDepth, ctx) + contextNote + '\n\nGuidelines:\n- Address the person by their first name where natural throughout the feedback\n- Reference their actual content specifically throughout\n- Use Australian English spelling and expression throughout\n- Be warm and constructive, not clinical\n- Give concrete rewrite examples where relevant\n- Do not use em-dashes\n- Keep paragraphs concise and scannable';
 
       var rawText = await callAPI(base64, userPrompt, systemPrompt);
       var scores = parseScores(rawText);
       var cleanText = rawText.replace(/SCORES:.*?\n/i, '').trim();
-      displayResults(cleanText, scores);
+      displayResults(cleanText, scores, profileName);
     } catch (err) {
       document.getElementById('loadingSection').classList.remove('show');
       document.getElementById('uploadCard').style.display = 'block';
@@ -1181,11 +1246,13 @@
     }
   }
 
-  function displayResults(markdown, scores) {
+  function displayResults(markdown, scores, profileName) {
+    lastProfileName = profileName || lastProfileName || '';
     document.getElementById('loadingSection').classList.remove('show');
     var depthLabels = { quick: 'Quick Scan', section: 'Deep Dive', full: 'Rewrite Focus' };
     var purposeLabels = { jobseeker: 'Permanent Role', fractional: 'Fractional / Contract', consultant: 'Client Attraction', board: 'Board Positions', speaking: 'Speaking Opportunities', both: 'Mixed Goals' };
-    document.getElementById('scoreBadge').textContent = purposeLabels[selectedPurpose] + ' \u00b7 ' + depthLabels[selectedDepth];
+    var nameLabel = profileName ? profileName + ' \u00b7 ' : '';
+    document.getElementById('scoreBadge').textContent = nameLabel + purposeLabels[selectedPurpose] + ' \u00b7 ' + depthLabels[selectedDepth];
     document.getElementById('resultsContent').innerHTML = renderMarkdown(markdown);
     document.getElementById('correctionPanel').classList.add('show');
     document.getElementById('correctionText').value = '';
@@ -1216,7 +1283,7 @@
       var rawText = await callAPI(base64, userPrompt, systemPrompt);
       var scores = parseScores(rawText);
       var cleanText = rawText.replace(/SCORES:.*?\n/i, '').trim();
-      displayResults(cleanText, scores);
+      displayResults(cleanText, scores, lastProfileName);
     } catch (err) {
       document.getElementById('loadingSection').classList.remove('show');
       document.getElementById('resultsSection').classList.add('show');
