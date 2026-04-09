@@ -151,6 +151,33 @@
   .results-content li { margin-bottom: 8px; color: var(--mid); }
   .results-content strong { color: var(--dark); font-weight: 600; }
 
+  /* Paged results navigation */
+  .page-nav { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: 28px; padding-top: 20px; border-top: 1.5px solid var(--teal-light); }
+  .page-indicator { font-size: 13px; color: var(--mid); font-weight: 500; }
+  .page-dots { display: flex; gap: 6px; align-items: center; }
+  .page-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal-mid); cursor: pointer; transition: all 0.2s ease; border: none; padding: 0; }
+  .page-dot.active { background: var(--teal); width: 20px; border-radius: 4px; }
+  .page-dot:hover { background: var(--teal); }
+  .btn-next-page { padding: 12px 24px; background: var(--teal); color: white; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; transition: background 0.18s ease; }
+  .btn-next-page:hover { background: #006666; }
+  .btn-prev-page { padding: 12px 20px; background: transparent; color: var(--teal); border: 1.5px solid var(--teal); border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.18s ease; }
+  .btn-prev-page:hover { background: var(--teal-light); }
+
+  /* Section title chip */
+  .section-chip { display: inline-block; background: var(--teal); color: white; font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+
+  /* Actions page */
+  .action-card { background: var(--teal-light); border: 1.5px solid var(--teal-mid); border-radius: 12px; padding: 20px 24px; margin-bottom: 16px; }
+  .action-card-num { font-size: 11px; font-weight: 700; color: var(--teal); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px; }
+  .action-card-title { font-size: 16px; font-weight: 600; color: var(--dark); margin-bottom: 8px; }
+  .action-card p { font-size: 14px; color: var(--mid); line-height: 1.6; margin-bottom: 10px; }
+  .action-link { font-size: 13px; color: var(--teal); font-weight: 600; cursor: pointer; text-decoration: underline; background: none; border: none; font-family: 'DM Sans', sans-serif; padding: 0; }
+  .action-link:hover { color: #006666; }
+
+  /* Save PDF button */
+  .save-pdf-btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; background: var(--dark); color: white; border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.18s ease; }
+  .save-pdf-btn:hover { background: #2d4a4a; }
+
   /* Correction panel */
   .correction-panel { display: none; background: var(--beige); border: 1.5px solid var(--yellow); border-radius: 12px; padding: 20px 24px; margin-top: 24px; }
   .correction-panel.show { display: block; }
@@ -172,6 +199,19 @@
   footer strong { color: white; font-weight: 600; }
   footer a { color: var(--teal-mid); text-decoration: none; }
   footer a:hover { color: white; }
+
+  /* Print / PDF styles */
+  @media print {
+    header, .intro-box, #step1, #questionCard, #uploadCard, .loading-section, .research-note, footer, .page-nav, .save-pdf-btn, .reset-btn, .correction-panel, .access-gate { display: none !important; }
+    .results-section { display: block !important; }
+    .results-body { box-shadow: none; border: none; padding: 0; }
+    .results-header { border-radius: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .result-page { display: block !important; page-break-after: always; margin-bottom: 40px; }
+    .result-page:last-child { page-break-after: avoid; }
+    .score-bar, .score-panel, .section-chip, .action-card { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .pdf-footer { display: block !important; }
+  }
+  .pdf-footer { display: none; font-size: 11px; color: #888; text-align: center; margin-top: 40px; padding-top: 16px; border-top: 1px solid #eee; line-height: 1.7; }
 
   /* Access gate */
   .access-gate { position: fixed; inset: 0; background: var(--dark); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 24px; }
@@ -301,7 +341,16 @@
       <hr class="section-divider">
 
       <span class="section-label">Upload your profile PDF</span>
-      <p style="font-size:12.5px;color:var(--mid);margin-bottom:14px;">To export from LinkedIn: go to your profile, click More, then Save to PDF.</p>
+      <div style="background:var(--teal-light);border:1px solid var(--teal-mid);border-radius:10px;padding:16px 20px;margin-bottom:16px;font-size:13px;color:var(--dark);line-height:1.8;">
+        <strong style="display:block;margin-bottom:8px;font-size:13.5px;">How to save your LinkedIn profile as a PDF:</strong>
+        <ol style="margin-left:18px;margin-bottom:0;">
+          <li>Open your profile on your computer (not mobile)</li>
+          <li>Look for the row of buttons just below your Follower and Connection numbers. You will see buttons including <strong>Open To</strong> and a circle with three dots (<strong>&bull;&bull;&bull;</strong>)</li>
+          <li>Click the <strong>circle with three dots</strong></li>
+          <li>Select <strong>Save to PDF</strong></li>
+          <li>Your browser will download a PDF file. Upload that file below.</li>
+        </ol>
+      </div>
       <div class="drop-zone" id="dropZone">
         <input type="file" id="fileInput" accept=".pdf" onchange="handleFile(event)">
         <div class="drop-icon">&#128196;</div>
@@ -334,17 +383,44 @@
       </div>
       <div class="results-body">
         <div class="score-panel" id="scorePanel" style="display:none;">
-          <h4>Profile Score &mdash; Five Dimensions</h4>
+          <h4>Discoverability Score</h4>
           <div class="score-dimensions" id="scoreDimensions"></div>
         </div>
-        <div class="results-content" id="resultsContent"></div>
+
+        <!-- Paged result sections: shown one at a time -->
+        <div id="resultPages"></div>
+
+        <!-- Page navigation -->
+        <div class="page-nav" id="pageNav">
+          <button class="btn-prev-page" id="btnPrevPage" onclick="goToPrevPage()" style="display:none;">&larr; Previous</button>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div class="page-dots" id="pageDots"></div>
+            <span class="page-indicator" id="pageIndicator">Section 1 of 6</span>
+          </div>
+          <button class="btn-next-page" id="btnNextPage" onclick="goToNextPage()">Ready for the next section &rarr;</button>
+        </div>
+
+        <!-- Bottom actions (shown on last page) -->
+        <div id="bottomActions" style="display:none;margin-top:24px;display:none;">
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+            <button class="save-pdf-btn" onclick="savePDF()">&#128196; Save results as PDF</button>
+            <button class="reset-btn" onclick="resetTool()">&larr; Analyse Another Profile</button>
+          </div>
+        </div>
+
         <div class="correction-panel" id="correctionPanel">
           <h4>&#9997; Something not quite right?</h4>
           <p>If the analysis made assumptions that do not apply to you, tell us here and we will re-run it with your correction.</p>
           <textarea class="correction-textarea" id="correctionText" placeholder="Describe what the tool got wrong or assumed incorrectly..."></textarea>
           <button class="correction-btn" id="correctionBtn" onclick="reanalyseWithCorrection()">Re-analyse with this correction &rarr;</button>
         </div>
-        <button class="reset-btn" onclick="resetTool()">&larr; Analyse Another Profile</button>
+
+        <!-- PDF footer (only visible when printing) -->
+        <div class="pdf-footer" id="pdfFooter">
+          Desleigh White &middot; People Matter Coaching &amp; HR &middot; contact@peoplematterhr.com.au &middot; peoplematterhr.com.au<br>
+          This analysis was generated by AI. All suggestions should be reviewed and adapted at your own discretion. It is entirely your choice what, if anything, you action from these results.<br>
+          LinkedIn optimisation is an ongoing process. We recommend making changes, observing the impact, and iterating over time.
+        </div>
       </div>
     </div>
 
@@ -370,8 +446,7 @@
     'davidgbogbo@gmail.com',
     'khourirevell@hotmail.com',
     'jacquie@mccannadvisory.com.au',
-    'maria.mermelas@outlook.com',
-    'tammy@tammytansley.com.au'
+    'maria.mermelas@outlook.com'
     // Add more approved emails below, e.g.:
     // 'jane.smith@example.com',
   ];
@@ -1135,7 +1210,24 @@
       '- Option 1: Formal professional networking context\n' +
       '- Option 2: Warm conversational context\n' +
       '- Option 3: Bold positioning-forward context\n' +
-      'Each should be 2-4 sentences. Plain language. No em dashes. Australian English.';
+      'Each should be 2-4 sentences. Plain language. No em dashes. Australian English.\n\n' +
+
+      '## Top 3 Actions\n' +
+      'Based on everything in this analysis, identify the single 3 most impactful actions this person should take right now to improve their LinkedIn discoverability and positioning for their target roles. For each action:\n' +
+      '- Give it a clear title\n' +
+      '- Explain exactly what to do, with enough specific detail that they can action it without referring back to any other section\n' +
+      '- Include the optimised copy if relevant (e.g. the new headline text, making sure it uses the full 220 characters; the opening lines of the About section, making sure the full rewrite is within 2,600 characters)\n' +
+      '- Explain the expected impact on their discoverability or positioning\n\n' +
+
+      '## LinkedIn Activity Tips\n' +
+      'Based on current LinkedIn best practice research, provide practical advice on how this person can boost their LinkedIn visibility and authority through ongoing activity. Cover:\n' +
+      '- How often to post and what type of content works best for their goal\n' +
+      '- How to engage strategically with others\' content (commenting, sharing, reacting) to boost profile views\n' +
+      '- The value of following relevant hashtags and industry voices\n' +
+      '- How to use LinkedIn articles and newsletters if relevant to their goal\n' +
+      '- The importance of profile completeness and All-Star status for search ranking\n' +
+      '- A note that LinkedIn optimisation is an ongoing process: make changes, observe results, iterate over time and test what works\n' +
+      '- A reminder that these are suggestions only and it is entirely their choice what to try';
 
     var scoreInstruction = '\n\nIMPORTANT: At the very start of your response, output a scores line in this exact format (use the Discoverability Score from Section 8 as the overall score):\nSCORES: Clarity=N | Relevance=N | Proof=N | Discoverability=N | Professional Impression=N\n\nAll scores out of 5. Then begin the analysis.';
 
@@ -1247,6 +1339,60 @@
     }
   }
 
+  // Page groupings: each entry is { title, chip, sectionHeadings[] }
+  var PAGE_GROUPS = [
+    { title: 'Discoverability: Search & Keywords', chip: 'Sections 1 + 2', headings: ['1. LinkedIn Recruiter Boolean Search Simulation', '2. LinkedIn Algorithm Keyword Density Analysis'] },
+    { title: 'First Impressions: Headline & Filters', chip: 'Sections 3 + 4', headings: ['3. Title and Headline Search Power', '4. LinkedIn Recruiter Filter Test'] },
+    { title: 'Profile Substance: Experience & Skills', chip: 'Sections 5 + 6', headings: ['5. Experience Section Search Strength', '6. LinkedIn Skills Strategy'] },
+    { title: 'Recruiter Psychology & Your Score', chip: 'Sections 7 + 8', headings: ['7. Recruiter Psychology Test', '8. Discoverability Score'] },
+    { title: 'Your Optimised Profile Rewrite', chip: 'Section 9', headings: ['9. Optimised LinkedIn Profile Rewrite'] },
+    { title: 'Your Top 3 Actions + LinkedIn Tips', chip: 'Actions', headings: ['Top 3 Actions', 'Recommendations', 'Activity and Visibility', 'Elevator Pitches', 'LinkedIn Activity Tips'] }
+  ];
+
+  var currentPage = 0;
+  var totalPages = PAGE_GROUPS.length;
+  var parsedSections = {};
+
+  function splitIntoSections(markdown) {
+    // Split markdown into named sections keyed by ## heading
+    var sections = {};
+    var lines = markdown.split('\n');
+    var currentKey = '__intro__';
+    var buffer = [];
+    for (var i = 0; i < lines.length; i++) {
+      var t = lines[i];
+      if (/^## .+/.test(t.trim())) {
+        sections[currentKey] = buffer.join('\n');
+        currentKey = t.trim().replace(/^## /, '');
+        buffer = [];
+      } else {
+        buffer.push(t);
+      }
+    }
+    sections[currentKey] = buffer.join('\n');
+    return sections;
+  }
+
+  function getSectionsForPage(pageIndex) {
+    var group = PAGE_GROUPS[pageIndex];
+    var content = '';
+    group.headings.forEach(function(heading) {
+      // Fuzzy match: find any key that contains the heading text
+      Object.keys(parsedSections).forEach(function(key) {
+        if (key.toLowerCase().indexOf(heading.toLowerCase().replace(/^\d+\. /,'')) !== -1 || heading.toLowerCase().indexOf(key.toLowerCase().replace(/^\d+\. /,'')) !== -1) {
+          if (parsedSections[key] && parsedSections[key].trim()) {
+            content += '## ' + key + '\n' + parsedSections[key] + '\n\n';
+          }
+        }
+      });
+    });
+    // Fallback: if nothing matched for this page, show a note
+    if (!content.trim()) {
+      content = 'This section was not included in your selected analysis depth.';
+    }
+    return content;
+  }
+
   function displayResults(markdown, scores, profileName) {
     lastProfileName = profileName || lastProfileName || '';
     document.getElementById('loadingSection').classList.remove('show');
@@ -1254,12 +1400,106 @@
     var purposeLabels = { jobseeker: 'Permanent Role', fractional: 'Fractional / Contract', consultant: 'Client Attraction', board: 'Board Positions', speaking: 'Speaking Opportunities', both: 'Mixed Goals' };
     var nameLabel = profileName ? profileName + ' \u00b7 ' : '';
     document.getElementById('scoreBadge').textContent = nameLabel + purposeLabels[selectedPurpose] + ' \u00b7 ' + depthLabels[selectedDepth];
-    document.getElementById('resultsContent').innerHTML = renderMarkdown(markdown);
-    document.getElementById('correctionPanel').classList.add('show');
-    document.getElementById('correctionText').value = '';
+
+    parsedSections = splitIntoSections(markdown);
+    currentPage = 0;
+
     if (scores) { renderScorePanel(scores); }
+
+    renderCurrentPage();
+
+    document.getElementById('correctionText').value = '';
     document.getElementById('resultsSection').classList.add('show');
     document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderCurrentPage() {
+    var group = PAGE_GROUPS[currentPage];
+    var content = getSectionsForPage(currentPage);
+    var html = '<div class="result-page">';
+    html += '<span class="section-chip">' + group.chip + '</span>';
+    html += '<h2 style="font-family:\'DM Serif Display\',serif;font-size:22px;font-weight:400;color:var(--dark);margin-bottom:20px;">' + group.title + '</h2>';
+    html += '<div class="results-content">' + renderMarkdown(content) + '</div>';
+    html += '</div>';
+    document.getElementById('resultPages').innerHTML = html;
+
+    // Update dots
+    var dotsEl = document.getElementById('pageDots');
+    dotsEl.innerHTML = '';
+    for (var i = 0; i < totalPages; i++) {
+      var dot = document.createElement('button');
+      dot.className = 'page-dot' + (i === currentPage ? ' active' : '');
+      dot.setAttribute('aria-label', 'Go to section ' + (i + 1));
+      dot.onclick = (function(idx) { return function() { goToPage(idx); }; })(i);
+      dotsEl.appendChild(dot);
+    }
+
+    document.getElementById('pageIndicator').textContent = 'Section ' + (currentPage + 1) + ' of ' + totalPages;
+
+    var isLast = currentPage === totalPages - 1;
+    var isFirst = currentPage === 0;
+    document.getElementById('btnNextPage').textContent = isLast ? 'Finished \u2713' : 'Ready for the next section \u2192';
+    document.getElementById('btnNextPage').onclick = isLast ? function() {} : goToNextPage;
+    document.getElementById('btnNextPage').style.opacity = isLast ? '0.5' : '1';
+    document.getElementById('btnNextPage').style.cursor = isLast ? 'default' : 'pointer';
+    document.getElementById('btnPrevPage').style.display = isFirst ? 'none' : 'inline-flex';
+
+    // Show score panel on page 4 (Recruiter Psychology & Score)
+    document.getElementById('scorePanel').style.display = currentPage === 3 ? 'block' : 'none';
+
+    // Show bottom actions on last page
+    var bottomEl = document.getElementById('bottomActions');
+    bottomEl.style.display = isLast ? 'flex' : 'none';
+    document.getElementById('correctionPanel').classList.toggle('show', isLast);
+
+    window.scrollTo({ top: document.getElementById('resultsSection').offsetTop - 20, behavior: 'smooth' });
+  }
+
+  function goToNextPage() {
+    if (currentPage < totalPages - 1) {
+      currentPage++;
+      renderCurrentPage();
+    }
+  }
+
+  function goToPrevPage() {
+    if (currentPage > 0) {
+      currentPage--;
+      renderCurrentPage();
+    }
+  }
+
+  function goToPage(idx) {
+    currentPage = idx;
+    renderCurrentPage();
+  }
+
+  function savePDF() {
+    // Make all pages visible for print
+    var originalContent = document.getElementById('resultPages').innerHTML;
+    var allContent = '<div class="result-page">';
+    for (var i = 0; i < totalPages; i++) {
+      var group = PAGE_GROUPS[i];
+      var content = getSectionsForPage(i);
+      allContent += '<span class="section-chip">' + group.chip + '</span>';
+      allContent += '<h2 style="font-family:\'DM Serif Display\',serif;font-size:22px;font-weight:400;color:var(--dark);margin:24px 0 16px;">' + group.title + '</h2>';
+      allContent += '<div class="results-content">' + renderMarkdown(content) + '</div>';
+      if (i < totalPages - 1) allContent += '<div style="page-break-after:always;margin-bottom:40px;"></div>';
+    }
+    allContent += '</div>';
+    document.getElementById('resultPages').innerHTML = allContent;
+    document.getElementById('scorePanel').style.display = 'block';
+    document.getElementById('pageNav').style.display = 'none';
+    document.getElementById('bottomActions').style.display = 'none';
+    document.getElementById('correctionPanel').classList.remove('show');
+    window.print();
+    // Restore after print
+    setTimeout(function() {
+      document.getElementById('resultPages').innerHTML = originalContent;
+      document.getElementById('scorePanel').style.display = currentPage === 3 ? 'block' : 'none';
+      document.getElementById('pageNav').style.display = 'flex';
+      renderCurrentPage();
+    }, 1000);
   }
 
   async function reanalyseWithCorrection() {
@@ -1325,9 +1565,12 @@
   function resetTool() {
     selectedFile = null;
     selectedPurpose = 'jobseeker';
-    selectedDepth = 'quick';
+    selectedDepth = 'section';
     questionAnswers = {};
     currentQuestion = 0;
+    currentPage = 0;
+    parsedSections = {};
+    lastProfileName = '';
     document.getElementById('fileInput').value = '';
     document.getElementById('fileSelected').classList.remove('show');
     document.getElementById('analyseBtn').disabled = true;
@@ -1338,11 +1581,13 @@
     document.getElementById('step1').style.display = 'block';
     document.getElementById('scorePanel').style.display = 'none';
     document.getElementById('correctionPanel').classList.remove('show');
-    document.getElementById('depthDesc').textContent = depthDescriptions['quick'];
+    document.getElementById('resultPages').innerHTML = '';
+    document.getElementById('depthDesc').textContent = depthDescriptions['section'];
     document.querySelectorAll('.purpose-btn').forEach(function(b, i) { b.classList.toggle('active', i === 0); });
-    document.querySelectorAll('.depth-btn').forEach(function(b, i) { b.classList.toggle('active', i === 0); });
+    document.querySelectorAll('.depth-btn').forEach(function(b, i) { b.classList.toggle('active', i === 1); });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 </script>
 </body>
 </html>
+
